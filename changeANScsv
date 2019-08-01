@@ -1,0 +1,80 @@
+import csv
+from shutil import copyfile
+
+#temp line to save work, copy fine from copy.csv to output.csv
+copyfile ('copy.csv','output.csv')
+
+onehandfile = 'output.csv'
+
+
+with open(onehandfile, 'r') as readFile:
+    reader = csv.reader(readFile)
+    lines = list(reader)
+
+    #time changes
+    lines[3][0] = 'start time'
+    #last 6 characetsr in cell B3
+    lines[3][1] = (lines[2][1][-6:-4] + ":" + lines[2][1][-4:-2] + ":" + lines[2][1][-2:] )
+
+    #add colums after the current file
+    lines[4].append('adjusted time')
+    lines[4].append('')
+    lines[4].append('LF/HF')
+    lines[4].append(" ")
+    lines[4].append('diffnLF(%) #' + lines[0][1])
+    lines[4].append('diffnHF(%) #' + lines[0][1])
+    lines[4].append('diffnSDNN(ms) #' + lines[0][1])
+    lines[4].append('diffnRMSSD(ms) #' + lines[0][1])
+    lines[4].append('diffnpRR50(%) #' + lines[0][1])
+    lines[4].append('diffnpVLF(%) #' + lines[0][1])
+    lines[4].append('diffnpLF/HF(%) #' + lines[0][1])
+
+    #add forumlae to each columns C++ like loop
+    i = 5
+    j = i+1
+    while i<len(lines):
+        lines[i].append("=$B$4+TIME(0,0,A" + str(j) +")")
+        lines[i].append("")
+        lines[i].append("=B" + str(j) + "/C" + str(j))
+        i=i+1
+        j=j+1
+
+    #add new row, then add averages to all columns of parameters
+    lines.append(['average'])
+    lines[len(lines)-1].append('=average(B6:B' + str(len(lines)-1) + ")")
+    lines[len(lines)-1].append('=average(C6:C' + str(len(lines)-1) + ")")
+    lines[len(lines)-1].append('=average(D6:D' + str(len(lines)-1) + ")")
+    lines[len(lines)-1].append('=average(E6:E' + str(len(lines)-1) + ")")
+    lines[len(lines)-1].append('=average(F6:F' + str(len(lines)-1) + ")")
+    lines[len(lines)-1].append('=average(G6:G' + str(len(lines)-1) + ")")
+    lines[len(lines)-1].append('')
+    lines[len(lines)-1].append('')
+    lines[len(lines)-1].append('=average(J6:J' + str(len(lines)-1) + ")")
+
+    #add forumlae to each columns C++ like loop to the difference structure
+    i = 5
+    j = i+1
+    while i<len(lines)-1:
+        lines[i].append("")
+        lines[i].append("=B" + str(j) + "-B"+ str(len(lines))) #diffnLF
+        lines[i].append("=C" + str(j) + "-C" + str(len(lines)))  # diffnHF
+        lines[i].append("=D" + str(j) + "-D" + str(len(lines)))  # diffnSDNN
+        lines[i].append("=E" + str(j) + "-E" + str(len(lines)))  # diffnRMSSD
+        lines[i].append("=F" + str(j) + "-F" + str(len(lines)))  # diffnpRR50
+        lines[i].append("=G" + str(j) + "-G" + str(len(lines)))  # diffnpVLF
+        lines[i].append("=J" + str(j) + "-J" + str(len(lines)))  # diffnpLFHF
+        i=i+1
+        j=j+1
+
+
+
+
+with open(onehandfile, 'w', newline='') as writeFile:
+    writer = csv.writer(writeFile)
+    writer.writerows(lines)
+
+readFile.close()
+writeFile.close()
+
+
+#onehandfile.close()
