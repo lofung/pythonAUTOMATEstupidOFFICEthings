@@ -1,0 +1,23 @@
+from changeANScsvFUNCTION import changeANScsv
+import os
+
+os.chdir('########PATH#########')
+print(os.listdir())
+
+errorlist=[]
+
+
+print("-------------------------")
+
+
+for fname in os.listdir():
+    try:
+        changeANScsv(fname)
+        print(fname + ' OK')
+    except:
+        print(fname + ' CSV DIFFERENT ERROR')
+        errorlist.append(fname)
+        pass
+print("----------------------------")
+print("below is error CSV list")
+print (errorlist)
