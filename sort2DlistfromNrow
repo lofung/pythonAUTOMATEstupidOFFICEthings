@@ -1,0 +1,20 @@
+import csv
+
+onehandfile = '####PATH#####'
+
+
+with open(onehandfile, 'r') as readFile:
+    reader = csv.reader(readFile)
+    lines = list(reader)
+    #sort from 6th row onwards, checking every row (i=i+1)
+    desired_lines = lines[6::1]
+    #change all string in column 1 to float since string sort is different.
+    desired_lines = sorted(desired_lines, key=lambda x: float(x[0]))
+    #remove first 6 row in lines
+    del lines[6:]
+    #add all sorted rows
+    lines.extend(desired_lines)
+
+with open(onehandfile, 'w', newline='') as writeFile:
+        writer = csv.writer(writeFile)
+        writer.writerows(lines)
