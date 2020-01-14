@@ -1,0 +1,28 @@
+import os
+from datetime import datetime
+
+#path = input('input path needed to sort photos: \n')
+path = 'E:\\nendoroid photos\\20200101 JAPAN KOMIKET - COPY'
+exts = set(["cr2", "jpg", "mp4"])
+
+for f in os.listdir(path):
+    fpath = os.path.join(path, f)
+    ext = f.split(".")[-1].lower()
+    #print(f)
+
+    if os.path.isfile(fpath) and ext in exts:
+        time = datetime.fromtimestamp(os.path.getmtime(fpath)).strftime("%Y-%m-%d")
+        #print(time)
+        month = int(time[5:7])
+        #print(month)
+        day = int(time[8:10])
+        #print(day)
+
+        if month==12 and day > 19:
+            #print(path)
+            os.makedirs(os.path.join(path, time, ext), exist_ok=True)
+            os.replace(fpath, os.path.join(path, time, ext, f))
+        if month==1 and day < 13:
+            #print(path)
+            os.makedirs(os.path.join(path, time, ext), exist_ok=True)
+            os.replace(fpath, os.path.join(path, time, ext, f))
