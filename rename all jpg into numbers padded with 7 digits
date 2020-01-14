@@ -1,0 +1,10 @@
+#path = input('input path needed to sort photos: \n')
+path = 'E:\\nendoroid photos\\20200101 JAPAN KOMIKET - COPY'
+
+import os
+import glob
+
+os.chdir(path)
+for index, oldfile in enumerate(glob.glob("*.jpg"), start=1):
+    newfile = '{:07}.jpg'.format(index)
+    os.rename (oldfile,newfile)
