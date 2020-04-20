@@ -1,0 +1,69 @@
+#credited:
+
+#https://stackoverflow.com/questions/9234560/find-all-csv-files-in-a-directory-using-python/12280052
+
+
+
+import os
+
+import glob
+
+import pandas as pd
+
+import csv
+
+
+
+#set working directory
+
+os.chdir("C:\\PATH")
+
+
+
+#find all csv files in the folder
+
+#use glob pattern matching -> extension = 'csv'
+
+#save result in list -> all_filenames
+
+extension = 'csv'
+
+all_filenames = [i for i in glob.glob('test*.{}'.format(extension))]
+
+print("all file name is")
+
+print(all_filenames)
+
+print("================")
+
+print("================")
+
+
+
+
+
+#for filename in all_filenames:
+
+#    with open(filename, 'r') as csvfile:
+
+#        sales = csv.reader(csvfile)
+
+#        for row in sales:
+
+#            print(row)
+
+
+
+
+
+
+
+#print([pd.read_csv(f) for f in all_filenames])
+
+#combine all files in the list
+
+combined_csv = pd.concat([pd.read_csv(f, header=None) for f in all_filenames], ignore_index=True)
+
+#export to csv
+
+combined_csv.to_csv( "combined_csv.csv", index=False, encoding='utf-8-sig')
